@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load s_admin_tags %}
+
+{% block body %}
+{#生成依赖表信息#}
+    {% object_delete model_obj %}
+
+    <form method="post">
+    {% csrf_token %}
+    &nbsp;
+    <button class="btn btn-danger" type="submit">删除</button>
+    &nbsp;
+    <a href="{% get_back_page request del_id %}" class="btn btn-info">返回</a>
+    </form>
+
+
+{% endblock %}

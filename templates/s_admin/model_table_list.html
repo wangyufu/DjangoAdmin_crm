@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load s_admin_tags %}
+{% block body %}
+
+    <div class="container">
+{#  <ol class="breadcrumb">#}
+{#  <li><a href="/simulation_admin/">Home</a></li>#}
+{#  <li><a href="/simulation_admin/">{{ app_name }}</a></li>#}
+{#  <li><a href="/simulation_admin/{{ app_name }}/{{ model_name }}/">{{ model_name }}</a></li>#}
+{#</ol>#}
+        {#  合并搜索和过滤的url get #}
+        {#    {% get_filter_condtions_string filter_conditions q_val as  filter_condtions_string %}#}
+        <h3>{{ app_name }}</h3>
+        {% if admin_obj_list.list_filter %}
+            {#      搜索和过滤要在一个form，不然 get会分离      #}
+            <form>
+                <div class="row">
+
+                    {% for filter_column in admin_obj_list.list_filter %}
+                        <div class="col-lg-2">
+                            <p>{{ filter_column }}</p>
+                            {% build_filter_ele filter_column admin_obj_list filter_condtions %}
+                        </div>
+                    {% endfor %}
+                    <div class="col-lg-2"><button class="btn btn-success" style="margin-top: 30px">过滤</button></div>
+
+                </div>
+
+                {% if admin_obj_list.list_search %}
+                    <div class="row" style="margin-top: 4px">
+
+                        <div class="col-lg-2">
+                            <div class="input-group">
+                                <input type="search" name="_q" value="{% if q_val %}{{ q_val }}{% endif %}"
+                                       class="form-control" placeholder="
+                                        {% for s_field in admin_obj_list.list_search %}{{ s_field }} {% endfor %}"><span
+                                    class="input-group-addon btn btn-primary"><i
+                                    class="fa fa-search" aria-hidden="true"></i></span>
+                            </div>
+                        </div>
+
+                    </div>
+                {% endif %}
+
+
+            </form>
+        {% endif %}
+        <div class="row">
+            <div class="col-lg-2 col-lg-offset-10">
+            <a href="add/" type="button" class="btn btn-info">新增数据</a>
+                </div>
+        </div>
+{#                onsubmit 事件会在表单中的确认按钮被点击时发生。 return true 提交，反之不提交 #}
+        <form method="post" onsubmit="return FormVerification(this);">{% csrf_token %}
+        <div class="row">
+            <div class="col-lg-2">
+                <select class="form-control" name="admin_action">
+                    <option value>--------</option>
+                    {% for opt in admin_obj_list.default_actions %}
+                        <option value="{{ opt }}">{{ opt }}</option>
+                    {% endfor %}
+                    {% for opt in admin_obj_list.actions %}
+                        <option value="{{ opt }}">{{ opt }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-lg-2">
+
+                <button type="submit" class="btn btn-info" >执行</button>
+            </div>
+        </div>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th><input onclick="checkAll(this);" type="checkbox"></th>
+                {% if admin_obj_list.list_display %}
+                    {% for column in admin_obj_list.list_display %}
+
+                        <th>
+
+                        {% if order_column == column %}
+                            <a href="?_o={{ new_order_key }}&{{ page_info.filter_str }}">
+                                {{ column }}
+                                {% generate_orderby_icon  new_order_key %}
+                            </a>
+                            {% else %}
+                            <a href="?_o={{ column }}&{{ page_info.filter_str }}">
+                                {{ column }}
+                            </a>
+                        {% endif %}
+
+                        </th>
+
+                    {% endfor %}
+                {% else %}
+                    <th>
+                        name
+                    </th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in user_list %}
+                {% build_table_row row admin_obj_list %}
+            {% endfor %}
+            </tbody>
+        </table>
+        </form>
+    <div class="text-center">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                {{ page_info.page_str | safe }}
+            </ul>
+        </nav>
+    </div>
+    </div>
+    <script>
+    function checkAll(self) {
+        if ($(self).prop('checked')){
+            $('table .row_checkbox').prop('checked', true)
+        }else{
+            $('table .row_checkbox').prop('checked', false)
+        }
+    }
+
+        function FormVerification() {
+        var action_val = $("select[name='admin_action']").val()
+        console.log(action_val)
+            if ($('table .row_checkbox:checked').length == 0){
+                return false
+            }
+            // -------- 这个的vlaue是空
+            if (!action_val){
+                return false
+            }
+            return true
+    }
+    </script>
+{% endblock %}
+
+

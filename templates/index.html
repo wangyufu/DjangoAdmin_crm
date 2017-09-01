@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block body %}
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="http://v3.bootcss.com/examples/dashboard/#">Project name</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="http://v3.bootcss.com/examples/dashboard/#">Dashboard</a></li>
+                    <li><a href="http://v3.bootcss.com/examples/dashboard/#">Settings</a></li>
+                    <li><a href="http://v3.bootcss.com/examples/dashboard/#">Profile</a></li>
+                    <li class="dropdown" style="z-index: 100">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">{{ request.user.name }} <span class="caret"></span></a>
+                        <ul class="dropdown-menu" >
+                            <li><a href="{% url 'logout' %}">退出</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <form class="navbar-form navbar-right">
+                    <input type="text" class="form-control" placeholder="Search...">
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 col-md-2 sidebar">
+
+                {% for foo in request.user.role.menus.all %}
+                    <ul class="nav nav-sidebar">
+                        <li class="header active"><a href="#"><h4>{{ foo.name }}</h4></a></li>
+                        {% for i in foo.submenu_set.all %}
+
+                            <li class="content" style="display: none">
+{#                             href 值有空格js匹配会找不到 #}
+                                <a href="{% if i.url_type == 0 %}{{i.url}}{% else %}{%url i.url%}{% endif %}">
+                                    <p style="text-indent: 2em">
+                                        {{ i.name }}
+                                    </p>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+
+
+            </div>
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="z-index: 50">
+                {% block conent %}  {% endblock %}
+
+
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+         $(document).ready(function () {
+
+        var highlight_menu = $("a[href='{{ request.path }}']");
+             highlight_menu.parent().addClass('active');
+             highlight_menu.parent().css('opacity',0.4);
+             highlight_menu.parent().css('display', 'block');
+
+             highlight_menu.parent().nextAll().css('display', 'block');
+        if ($(highlight_menu).parent().hasClass("content")){
+            console.log('aaa')
+
+{#            $(highlight_menu).parent().parent().removeClass("hidden");#}
+        }
+
+    })
+
+        $('.header').click(function () {
+
+            $(this).nextAll().css('display', 'block');
+            $(this).parent().siblings().children('.content').css('display', 'none');
+        })
+    </script>
+{% endblock %}

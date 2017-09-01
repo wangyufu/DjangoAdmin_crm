@@ -1,0 +1,127 @@
+{#继承load了，还是会报错，父页面还需要load一次#}
+{% load s_admin_tags %}
+<div class="container" >
+{#    <ol class="breadcrumb">#}
+{#  <li><a href="/simulation_admin/">Home</a></li>#}
+{#  <li><a href="/simulation_admin/">{{ app_name }}</a></li>#}
+{#  <li><a href="/simulation_admin/{{ app_name }}/{{ model_name }}/">{{ model_name }}</a></li>#}
+{#        <li class="active">#}
+{#            {% if  form_obj.instance.id %}{{ form_obj.instance }}{% else %}添加{{ model_name }}{% endif %}</li>#}
+{#</ol>#}
+    <form class="form-horizontal" method="post">
+        {% csrf_token %}
+        {% for field in form_obj %}
+            <div class="form-group">
+                {#  不是必填字段不加粗  #}
+                <label class="col-sm-2 control-label">
+                    {% if field.field.required %}
+                        {{ field.name }}
+                    {% else %}
+                        <span style="font-weight: normal">{{ field.name }}</span>
+                    {% endif %}
+                </label>
+
+
+                <div class="col-sm-10">
+                {% if field.name in admin_obj_list.readonly_fields %}
+                        <div>{{ field }}</div>
+                {% else %}
+                    {% if field.name in admin_obj_list.filter_horizontal %}
+                        {% get_selected_m2m_objects form_obj field.name as selected_m2m_objects %}
+                        {% get_m2m_objects admin_obj_list field.name selected_m2m_objects as m2m_objects %}
+                        <div class="col-sm-5">
+                            <div class="input-group">
+                                <input oninput="FuzzySearch(this)" type="search" name="_q" value="" class="form-control"
+                                       placeholder="
+                                        name "><span class="input-group-addon btn btn-primary"><i class="fa fa-search"
+                                                                                                  aria-hidden="true"></i></span>
+                            </div>
+                            <select id="{{ field.name }}_from" multiple class="form-control">
+                                {% for obj in m2m_objects %}
+                                    <option value="{{ obj.id }}">{{ obj }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="text-center">
+                                <button class="btn btn-default" onclick="toleft('{{ field.name }}');" type="button"><i
+                                        class="fa fa-arrow-circle-right" aria-hidden="true"></i></button>
+                            </div>
+
+                            <div class="text-center" style="margin-top: 4px">
+                                <button class="btn btn-default" onclick="toright('{{ field.name }}');" type="button"><i
+                                        class="fa fa-arrow-circle-left" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-5">
+                            {#           post 提交这个在这家name选项             #}
+                            <select ele-type='right-select-ele' id="{{ field.name }}_to" name="{{ field.name }}"
+                                    multiple class="form-control">
+                                {% for obj in selected_m2m_objects %}
+                                    <option value="{{ obj.id }}">{{ obj }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    {% else %}
+                        {{ field }}
+                    {% endif %}
+                {% endif %}
+                    <span style="color: red">{{ field.errors.0 }}  </span>
+                </div>
+
+            </div>
+
+        {% endfor %}
+        <div class="form-group">
+
+            {% get_add_or_change request.path_info as del_status %}
+
+
+            <div class="col-sm-offset-2 col-sm-10">
+                {% if del_status %}
+{#                通过url标签 对urls反向获取object_del,在把app_name model_name  form_obj.instance.id传进去#}
+                <a href="{% get_object_del_url request app_name model_name  form_obj.instance.id %}" class="btn btn-danger" >删除</a>
+
+            {% endif %}
+                <button type="submit" class="btn btn-success" onclick="SelectAllm2mElements()">提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    function SelectAllm2mElements() {
+        $("select[ele-type='right-select-ele'] option").prop("selected", true);
+        $("form :disabled").removeAttr('disabled');
+    }
+    function FuzzySearch(self) {
+
+        var seleect_ele = $(self).parent().next()
+        var search_text = $(self).val()
+        $(seleect_ele).children().each(function () {
+                    //xxx值在indexOf(x)  等于0  ，不等：-1
+                    console.log($(this).text().indexOf(search_text))
+                    if ($(this).text().indexOf(search_text) == -1) {
+                        $(this).css('display', 'none')
+                    } else {
+                        $(this).css('display', 'block')
+                    }
+                }
+        )
+    }
+    function toleft(id_name) {
+        // console.log($('#'+ id_name+'_to'))
+//        $('#fish option:selected').appendTo('#fruit')
+        $('#' + id_name + '_to').append($("#" + id_name + "_from option:selected"));
+
+    }
+    function toright(id_name) {
+        //    console.log($('#'+ id_name+'_from'))
+//        $('#fish option:selected').appendTo('#fruit')
+        $('#' + id_name + '_from').append($("#" + id_name + "_to option:selected"));
+    }
+
+</script>
+
+

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{# s_admin_tags 文件创建时，必须以package形式 #}
+{% load s_admin_tags %}
+{% block body %}
+    <div class="container">
+{#注册的admin list: {'web': {'classlist': <class 'simulation_admin.admin_base.BaseAdmin'>, 'course': <class 'simulation_admin.admin_base.BaseAdmin'>, 'customer': <class 'web.s_admin.CustomerAdmin'>}, 'teacher': {'teachertest': <class 'simulation_admin.admin_base.BaseAdmin'>}}#}
+        <ol class="breadcrumb">
+  <li class="active">Home</li>
+</ol>
+        {% for app_lable,model_dic in site.registered_admins.items %}
+            <h2>{{ app_lable }}</h2>
+            <table class="table table-hover">
+                {% for table_name,obj_list in model_dic.items %}
+                    <tr>
+                        <td class="info">
+                            <a href="{{ app_lable }}/{{ table_name }}/">{% get_model_verbose_name obj_list %}</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endfor %}
+    </div>
+
+
+{% endblock %}
