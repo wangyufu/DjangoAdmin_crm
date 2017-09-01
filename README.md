@@ -1,23 +1,23 @@
 CRM
 ==
-×÷Õß:ÍõÓî·ò    
+ä½œè€…:ç‹å®‡å¤«    
 
-## ³ÌĞò½éÉÜ:     
-    Ê¹ÓÃpython3+¡¢django1.11£¬Windows»òLinux»·¾³Ê¹ÓÃ£»
-	Ä£·Âdjango admin,¼¸ºõ¿ÉÒÔÊµÏÖdjango adminËùÓĞ¹¦ÄÜ£»    
-	ÊµÏÖÁË²»Í¬½ÇÉ«¹ÜÀí£¬²»Í¬µÄ½ÇÉ«ÓĞ²»Í¬µÄÈ¨ÏŞ£»
-	Ï¸ÖÂµÄÈ¨ÏŞ¹ÜÀí£¬¿ÉÒÔ½«È¨ÏŞ¿ØÖÆµ½ÊÇ·ñÔÊĞíÒ»°´¼ü¿ÉÒÔµã»÷µÄ¼¶±ğ
+## ç¨‹åºä»‹ç»:     
+    ä½¿ç”¨python3+ã€django1.11ï¼ŒWindowsæˆ–Linuxç¯å¢ƒä½¿ç”¨ï¼›
+	æ¨¡ä»¿django admin,å‡ ä¹å¯ä»¥å®ç°django adminæ‰€æœ‰åŠŸèƒ½ï¼›    
+	å®ç°äº†ä¸åŒè§’è‰²ç®¡ç†ï¼Œä¸åŒçš„è§’è‰²æœ‰ä¸åŒçš„æƒé™ï¼›
+	ç»†è‡´çš„æƒé™ç®¡ç†ï¼Œå¯ä»¥å°†æƒé™æ§åˆ¶åˆ°æ˜¯å¦å…è®¸ä¸€æŒ‰é”®å¯ä»¥ç‚¹å‡»çš„çº§åˆ«
 	
 
-## ³ÌĞòÊ¹ÓÃ£º     
-	1¡¢´´½¨cmdb¿â£¬µ¼Èëcmdb.sql      
-	2¡¢ÔËĞĞ·şÎñ£¬ÓÎÀÀÆ÷´ò¿ª/web£¬Ö÷Ò³    
-	3¡¢µÇÂ¼ÕÊºÅ wangyufu@163.com/wangyufu1992    
+## ç¨‹åºä½¿ç”¨ï¼š     
+	1ã€åˆ›å»ºcmdbåº“ï¼Œå¯¼å…¥cmdb.sql      
+	2ã€è¿è¡ŒæœåŠ¡ï¼Œæ¸¸è§ˆå™¨æ‰“å¼€/webï¼Œä¸»é¡µ    
+	3ã€ç™»å½•å¸å· wangyufu@163.com/wangyufu1992    
 	
 	
 	
-![](https://github.com/wangyufu/host_manage_web/blob/master/static/login.png)
+![](https://github.com/wangyufu/DjangoAdmin_crm/blob/master/static/crm1.png)
 
-![](https://github.com/wangyufu/host_manage_web/blob/master/static/index.png)
+![](https://github.com/wangyufu/DjangoAdmin_crm/blob/master/static/crm2.png)
 
-![](https://github.com/wangyufu/host_manage_web/blob/master/static/lob.png)
+![](https://github.com/wangyufu/DjangoAdmin_crm/blob/master/static/crm3.png)
